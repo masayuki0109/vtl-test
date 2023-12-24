@@ -1,3 +1,4 @@
+#set($userId = $util.autoId())
 #set($tTransactPutItems = [])
 #set($index = 0)
 #set($createdAt = $util.time.nowISO8601())
@@ -11,6 +12,7 @@
     $util.qr($attributeValues.put("name", $util.dynamodb.toString($todo.name)))
     $util.qr($attributeValues.put("createdAt", $util.dynamodb.toDynamoDB($createdAt)))
     $util.qr($attributeValues.put("updatedAt", $util.dynamodb.toDynamoDB($createdAt)))
+    $util.qr($attributeValues.put("userTodosId", $util.dynamodb.toDynamoDB($userId)))
     #set($index = $index + 1)
     #set($todoTransactPutItem = {"table": "Todo-jh2hqzvqtbg5dkgkmk74kgmnlm-dev",
     "operation": "PutItem",
@@ -23,7 +25,7 @@
 #set($userKey = {})
 #set($transactUser = [])
 $util.qr($userKey.put("username", $util.dynamodb.toString($user.name)))
-$util.qr($userKey.put("id", $util.dynamodb.toDynamoDB($util.autoId())))
+$util.qr($userKey.put("id", $util.dynamodb.toDynamoDB($userId)))
 $util.qr($userKey.put("createdAt", $util.dynamodb.toDynamoDB($createdAt)))
 $util.qr($userKey.put("updatedAt", $util.dynamodb.toDynamoDB($createdAt)))
 #set($userAttributes = {})
