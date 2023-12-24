@@ -3,7 +3,7 @@ import * as AmplifyHelpers from "@aws-amplify/cli-extensibility-helper";
 import * as appsync from "aws-cdk-lib/aws-appsync";
 import { AmplifyDependentResourcesAttributes } from "../../types/amplify-dependent-resources-ref";
 import { Construct } from "constructs";
-import { CfnDataSource } from "aws-cdk-lib/aws-appsync";
+import { Code } from "aws-cdk-lib/aws-appsync";
 import path from "path";
 
 const requestVTL = appsync.MappingTemplate.fromFile(path.join(__dirname, "..", "Query.testColin.req.vtl")).renderTemplate()

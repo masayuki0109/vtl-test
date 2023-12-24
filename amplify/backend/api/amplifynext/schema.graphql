@@ -4,14 +4,23 @@ type Todo @model @auth(rules: [{allow: public}]) {
   description: String
 }
 
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  username: String!
+  todos: [Todo] @hasMany 
+}
+
 input TodoInput {
     id: ID
     name: String!
     description: String
 }
+input UserInput {
+    name: String!
+}
 
 type Mutation {
-    testMutation(todos: [TodoInput]): [Todo]
+    testMutation(todos: [TodoInput], user: UserInput): [Todo]
     batchAddTodo(todos: [TodoInput]): [Todo]
     batchDeleteTodo(ids: [ID]): [Todo]
 }

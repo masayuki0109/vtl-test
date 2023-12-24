@@ -1,16 +1,48 @@
-#set($data = [])
+#set($tTransactPutItems = [])
+#set($index = 0)
 #set($createdAt = $util.time.nowISO8601())
-#foreach($item in \${ctx.args.todos})
-  $util.qr($item.put("id", $util.defaultIfNullOrBlank($item.id, $util.autoId())))
-  $util.qr($item.put("createdAt", $util.defaultIfNullOrBlank($item.createdAt, $createdAt)))
-  $util.qr($item.put("updatedAt", $util.defaultIfNullOrBlank($item.updatedAt, $createdAt)))
-  $util.qr($data.add($util.dynamodb.toMapValues($item)))
+#foreach($todo in ${ctx.args.todos})
+    #set($keyMap = {})
+    $util.qr($keyMap.put("name", $util.dynamodb.toString($todo.name)))
+    $util.qr($keyMap.put("id", $util.dynamodb.toDynamoDB($util.autoId())))
+    $util.qr($keyMap.put("createdAt", $util.dynamodb.toDynamoDB($createdAt)))
+    $util.qr($keyMap.put("updatedAt", $util.dynamodb.toDynamoDB($createdAt)))
+    #set($attributeValues = {})
+    $util.qr($attributeValues.put("name", $util.dynamodb.toString($todo.name)))
+    $util.qr($attributeValues.put("createdAt", $util.dynamodb.toDynamoDB($createdAt)))
+    $util.qr($attributeValues.put("updatedAt", $util.dynamodb.toDynamoDB($createdAt)))
+    #set($index = $index + 1)
+    #set($todoTransactPutItem = {"table": "Todo-jh2hqzvqtbg5dkgkmk74kgmnlm-dev",
+    "operation": "PutItem",
+    "key": $keyMap,
+    "attributeValues": $attributeValues})
+    $util.qr($tTransactPutItems.add($todoTransactPutItem))
 #end
+
+#set($user = $ctx.args.user)
+#set($userKey = {})
+#set($transactUser = [])
+$util.qr($userKey.put("username", $util.dynamodb.toString($user.name)))
+$util.qr($userKey.put("id", $util.dynamodb.toDynamoDB($util.autoId())))
+$util.qr($userKey.put("createdAt", $util.dynamodb.toDynamoDB($createdAt)))
+$util.qr($userKey.put("updatedAt", $util.dynamodb.toDynamoDB($createdAt)))
+#set($userAttributes = {})
+$util.qr($userAttributes.put("username", $util.dynamodb.toString($user.name)))
+$util.qr($userAttributes.put("createdAt", $util.dynamodb.toDynamoDB($createdAt)))
+$util.qr($userAttributes.put("updatedAt", $util.dynamodb.toDynamoDB($createdAt)))
+#set($index = $index + 1)
+#set($userPutItem = {"table": "User-jh2hqzvqtbg5dkgkmk74kgmnlm-dev",
+"operation": "PutItem",
+"key": $userKey,
+"attributeValues": $userAttributes})
+$util.qr($transactUser.add($userPutItem))
+
+#set($transactItems = [])
+$util.qr($transactItems.addAll($tTransactPutItems))
+$util.qr($transactItems.addAll($transactUser))
 
 {
     "version" : "2018-05-29",
-    "operation" : "BatchPutItem",
-    "tables" : {
-        "Todo-jh2hqzvqtbg5dkgkmk74kgmnlm-dev": $util.toJson($data)
-    }
+    "operation" : "TransactWriteItems",
+    "transactItems" : $util.toJson($transactItems)
 }
