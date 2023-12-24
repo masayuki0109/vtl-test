@@ -8,6 +8,34 @@ type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationOutput: OutputType;
 };
 
+export const batchAddTodo = /* GraphQL */ `mutation BatchAddTodo($todos: [TodoInput]) {
+  batchAddTodo(todos: $todos) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.BatchAddTodoMutationVariables,
+  APITypes.BatchAddTodoMutation
+>;
+export const batchDeleteTodo = /* GraphQL */ `mutation BatchDeleteTodo($ids: [ID]) {
+  batchDeleteTodo(ids: $ids) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.BatchDeleteTodoMutationVariables,
+  APITypes.BatchDeleteTodoMutation
+>;
 export const createTodo = /* GraphQL */ `mutation CreateTodo(
   $input: CreateTodoInput!
   $condition: ModelTodoConditionInput

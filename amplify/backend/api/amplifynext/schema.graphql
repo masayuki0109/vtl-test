@@ -3,3 +3,15 @@ type Todo @model @auth(rules: [{allow: public}]) {
   name: String!
   description: String
 }
+
+input TodoInput {
+    id: ID
+    name: String!
+    description: String
+}
+
+type Mutation {
+    batchAddTodo(todos: [TodoInput]): [Todo]
+    batchDeleteTodo(ids: [ID]): [Todo]
+}
+
