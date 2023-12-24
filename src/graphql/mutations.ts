@@ -2,12 +2,26 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-import * as APITypes from "../API";
+import * as APITypes from "../../amplify/backend/custom/MyCustomResolvers/src/API";
 type GeneratedMutation<InputType, OutputType> = string & {
   __generatedMutationInput: InputType;
   __generatedMutationOutput: OutputType;
 };
 
+export const testMutation = /* GraphQL */ `mutation TestMutation($todos: [TodoInput]) {
+  testMutation(todos: $todos) {
+    id
+    name
+    description
+    createdAt
+    updatedAt
+    __typename
+  }
+}
+` as GeneratedMutation<
+  APITypes.TestMutationMutationVariables,
+  APITypes.TestMutationMutation
+>;
 export const batchAddTodo = /* GraphQL */ `mutation BatchAddTodo($todos: [TodoInput]) {
   batchAddTodo(todos: $todos) {
     id

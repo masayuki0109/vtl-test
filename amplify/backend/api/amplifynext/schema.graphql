@@ -11,6 +11,7 @@ input TodoInput {
 }
 
 type Mutation {
+    testMutation(todos: [TodoInput]): [Todo]
     batchAddTodo(todos: [TodoInput]): [Todo]
     batchDeleteTodo(ids: [ID]): [Todo]
 }

@@ -150,6 +150,21 @@ export type ModelSubscriptionStringInput = {
   notIn?: Array< string | null > | null,
 };
 
+export type TestMutationMutationVariables = {
+  todos?: Array< TodoInput | null > | null,
+};
+
+export type TestMutationMutation = {
+  testMutation?:  Array< {
+    __typename: "Todo",
+    id: string,
+    name: string,
+    description?: string | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null > | null,
+};
+
 export type BatchAddTodoMutationVariables = {
   todos?: Array< TodoInput | null > | null,
 };
